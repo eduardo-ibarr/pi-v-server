@@ -9,7 +9,7 @@ const router = Router();
 const usersController = new UsersController(UsersFactory, new JoiProvider());
 
 router.get("/", authMiddleware, usersController.list.bind(usersController));
-router.post("/", authMiddleware, usersController.create.bind(usersController));
+router.post("/", usersController.create.bind(usersController));
 router.put(
   "/:id",
   authMiddleware,
