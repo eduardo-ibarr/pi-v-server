@@ -26,5 +26,6 @@ export class ResetPasswordService {
     const hashedPassword = await this.hashProvider.generateHash(password);
 
     await this.usersRepository.updatePassword(email, hashedPassword);
+    await this.usersRepository.updateResetPasswordToken(email, "", new Date());
   }
 }
