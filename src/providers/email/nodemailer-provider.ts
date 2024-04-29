@@ -1,16 +1,17 @@
 import { Transporter, createTransport } from "nodemailer";
+import { Environment } from "../../app/environment";
 
 export class NodemailerProvider {
   private transporter: Transporter;
 
   constructor() {
     this.transporter = createTransport({
-      host: process.env.EMAIL_HOST,
-      port: Number(process.env.EMAIL_PORT),
-      secure: process.env.EMAIL_SECURE === "true",
+      host: Environment.EMAIL_HOST,
+      port: Number(Environment.EMAIL_PORT),
+      secure: Environment.EMAIL_SECURE === "true",
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: Environment.EMAIL_USER,
+        pass: Environment.EMAIL_PASS,
       },
     });
   }
@@ -19,7 +20,7 @@ export class NodemailerProvider {
     try {
       await this.transporter.sendMail({
         to,
-        from: process.env.EMAIL_USER,
+        from: Environment.EMAIL_USER,
         subject,
         html: body,
       });

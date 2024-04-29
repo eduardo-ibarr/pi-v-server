@@ -10,7 +10,7 @@ export class CreateUserService {
     private hashProvider: IHashProvider
   ) {}
 
-  async execute(data: CreateUserDTO): Promise<User> {
+  async execute(data: CreateUserDTO): Promise<void> {
     const userAlreadyExists = await this.usersRepository.findByEmail(
       data.email
     );
@@ -21,8 +21,7 @@ export class CreateUserService {
 
     try {
       data.password = await this.hashProvider.generateHash(data.password);
-      const user = await this.usersRepository.create(data);
-      return user;
+      await this.usersRepository.create(data);
     } catch (error) {
       console.log(error);
       throw new AppError("Erro ao criar usuário.", 500);

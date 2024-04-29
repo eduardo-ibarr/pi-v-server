@@ -31,7 +31,7 @@ export class UsersRepository implements IUsersRepository {
     await this.databaseProvider.query(query, values);
   }
 
-  async findByEmail(email: string): Promise<User> {
+  async findByEmail(email: string): Promise<User | null> {
     const query = `
       SELECT * FROM users
       WHERE email = ?
@@ -41,7 +41,7 @@ export class UsersRepository implements IUsersRepository {
     return result;
   }
 
-  async create(data: CreateUserDTO): Promise<User> {
+  async create(data: CreateUserDTO): Promise<void> {
     const query = `
       INSERT INTO users (name, email, password, phone, role)
       VALUES (?, ?, ?, ?, ?)
@@ -54,11 +54,10 @@ export class UsersRepository implements IUsersRepository {
       data.role,
     ];
 
-    const result = await this.databaseProvider.query(query, values);
-    return result[0];
+    await this.databaseProvider.query(query, values);
   }
 
-  async findById(id: number): Promise<User> {
+  async findById(id: number): Promise<User | null> {
     const query = `
       SELECT * FROM users
       WHERE id = ?
@@ -80,13 +79,13 @@ export class UsersRepository implements IUsersRepository {
     `;
     const values = [data.name, data.email, data.phone, id];
     const result = await this.databaseProvider.query(query, values);
-    return result[0];
+    return result;
   }
 
   async delete(id: number): Promise<void> {
     const query = `
       UPDATE users
-      SET deleted_at = NOW(), is_active = false
+      SET deleted_at = NOW(), is_active = 0
       WHERE id = ?
     `;
     const values = [id];

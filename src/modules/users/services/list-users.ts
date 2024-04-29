@@ -6,6 +6,13 @@ export class ListUsersService {
 
   async execute(): Promise<User[]> {
     const users = await this.usersRepository.list();
+
+    users.forEach((user) => {
+      delete user.password;
+      delete user.password_reset_token;
+      delete user.password_reset_token_expiry;
+    });
+
     return users;
   }
 }

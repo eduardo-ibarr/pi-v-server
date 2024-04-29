@@ -1,20 +1,29 @@
 import { Router } from "express";
 import { UsersFactory } from "../../factories/users-factory";
 import { UsersController } from "../controllers/users-controller";
+import authMiddleware from "../../../../app/middlewares/authenticate";
+import { JoiProvider } from "../../../../providers/validation/joi-provider";
 
 const router = Router();
 
-const usersFactory = new UsersFactory();
-const usersController = new UsersController(usersFactory);
+const usersController = new UsersController(UsersFactory, new JoiProvider());
 
-router.get("/", usersController.list.bind(usersController));
-router.post("/", usersController.create.bind(usersController));
-router.put("/:id", usersController.update.bind(usersController));
-router.delete("/:id", usersController.delete.bind(usersController));
-router.get("/:id", usersController.show.bind(usersController));
-router.post("/login", usersController.authenticate.bind(usersController));
+router.get("/", authMiddleware, usersController.list.bind(usersController));
+router.post("/", authMiddleware, usersController.create.bind(usersController));
+router.put(
+  "/:id",
+  authMiddleware,
+  usersController.update.bind(usersController)
+);
+router.delete(
+  "/:id",
+  authMiddleware,
+  usersController.delete.bind(usersController)
+);
+router.get("/:id", authMiddleware, usersController.show.bind(usersController));
 router.post(
   "/reset-password",
+  authMiddleware,
   usersController.resetPassword.bind(usersController)
 );
 

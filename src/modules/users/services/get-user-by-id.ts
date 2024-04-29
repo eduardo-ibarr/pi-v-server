@@ -1,4 +1,5 @@
 import { AppError } from "../../../app/errors/app-error";
+import { UserReturnedDTO } from "../models/dtos/user-returned";
 import { IUsersRepository } from "../models/users-repository";
 
 export class GetUserByIdService {
@@ -12,7 +13,14 @@ export class GetUserByIdService {
         throw new AppError("Usuário não encontrado.", 404);
       }
 
-      return user;
+      const {
+        password,
+        password_reset_token,
+        password_reset_token_expiry,
+        ...userWithoutSensitiveData
+      } = user;
+
+      return <UserReturnedDTO>userWithoutSensitiveData;
     } catch (error) {
       throw new AppError("Erro ao buscar usuário por ID.", 500);
     }
