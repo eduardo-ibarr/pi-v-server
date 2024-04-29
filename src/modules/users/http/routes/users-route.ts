@@ -22,8 +22,11 @@ router.delete(
 );
 router.get("/:id", authMiddleware, usersController.show.bind(usersController));
 router.post(
+  "/forgot-password",
+  usersController.forgotPassword.bind(usersController)
+);
+router.post(
   "/reset-password",
-  authMiddleware,
   usersController.resetPassword.bind(usersController)
 );
 

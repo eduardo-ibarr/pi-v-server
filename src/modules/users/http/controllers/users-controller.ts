@@ -4,6 +4,8 @@ import { IValidationProvider } from "../../../../providers/validation/models/val
 import { createUserSchema } from "../../models/schemas/create-user-schema";
 import { updateUserSchema } from "../../models/schemas/update-user-schema";
 import { paramsSchema } from "../../models/schemas/params-schema";
+import { forgotPasswordSchema } from "../../models/schemas/forgot-password";
+import { resetPasswordSchema } from "../../models/schemas/reset-password-schema";
 
 export class UsersController {
   constructor(
@@ -65,13 +67,24 @@ export class UsersController {
     return response.json(user);
   }
 
-  async resetPassword(request: Request, response: Response) {
-    await this.validationProvider.validate(request.params, paramsSchema);
+  async forgotPassword(request: Request, response: Response) {
+    await this.validationProvider.validate(request.body, forgotPasswordSchema);
 
     const { email } = request.body;
+    const forgotPasswordService = this.usersFactory.makeForgotPasswordService();
+    await forgotPasswordService.generateToken(email);
+    await forgotPasswordService.sendTokenByEmail(email);
+
+    return response.status(204).send();
+  }
+
+  async resetPassword(request: Request, response: Response) {
+    await this.validationProvider.validate(request.body, resetPasswordSchema);
+
+    const { email, token, password } = request.body;
     const resetPasswordService = this.usersFactory.makeResetPasswordService();
-    await resetPasswordService.generateToken(email);
-    await resetPasswordService.sendTokenByEmail(email);
+
+    await resetPasswordService.execute(email, token, password);
 
     return response.status(204).send();
   }

@@ -17,9 +17,9 @@ export class Environment {
   static DB_USER: string = process.env.DB_USER as string;
   static DB_PASSWORD: string = process.env.DB_PASSWORD as string;
 
-  static EMAIL_HOST: string = process.env.EMAIL_HOST as string;
-  static EMAIL_PORT: number = parseInt(process.env.EMAIL_PORT as string);
-  static EMAIL_SECURE: string = process.env.EMAIL_SECURE as string;
-  static EMAIL_USER: string = process.env.EMAIL_USER as string;
-  static EMAIL_PASS: string = process.env.EMAIL_PASS as string;
+  static MAILERSEND_API_KEY: string = process.env.MAILERSEND_API_KEY as string;
+  static MAILERSEND_SENDER_EMAIL: string = process.env
+    .MAILERSEND_SENDER_EMAIL as string;
+  static MAILERSEND_SENDER_NAME: string = process.env
+    .MAILERSEND_SENDER_NAME as string;
 }
