@@ -10,8 +10,8 @@ export function handleErrors(
   console.error(error);
 
   if (error instanceof AppError) {
-    return response.status(error.statusCode).json({ error: error.message });
+    return response.status(error.statusCode).json({ message: error.message });
   } else {
-    return response.status(500).json({ error: "Erro interno do servidor." });
+    return response.status(500).json({ message: "Erro interno do servidor." });
   }
 }

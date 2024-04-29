@@ -12,7 +12,7 @@ export class ForgotPasswordService {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new Error("Usuário não encontrado.");
+      throw new AppError("Usuário não encontrado.");
     }
 
     const token = Math.random().toString(36).slice(-10);
@@ -26,7 +26,7 @@ export class ForgotPasswordService {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new Error("Usuário não encontrado.");
+      throw new AppError("Usuário não encontrado.");
     }
 
     const token = user.password_reset_token;
