@@ -8,6 +8,7 @@ const app = express();
 import usersRoutes from "./modules/users/http/routes/users-route";
 import authRoutes from "./modules/auth/http/routes/auth-routes";
 import productsRoutes from "./modules/products/http/routes/products-route";
+import categoriesRoutes from "./modules/categories/http/routes/categories-route";
 
 import { handleErrors } from "./app/middlewares/handle-errors";
 import { Environment } from "./app/environment";
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/products", productsRoutes);
+app.use("/categories", categoriesRoutes);
 
 app.use(handleErrors);
 

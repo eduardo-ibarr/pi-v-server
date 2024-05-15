@@ -23,7 +23,12 @@ CREATE TABLE IF NOT EXISTS users (
 -- Tabela de categorias
 CREATE TABLE IF NOT EXISTS categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL,
+    description VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP,
+    is_active BOOLEAN DEFAULT TRUE,
 );
 
 -- Tabela de produtos
