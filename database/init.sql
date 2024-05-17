@@ -146,7 +146,7 @@ INSERT INTO categories (name, description) VALUES
 
 -- Inserir Produtos (com URLs das imagens):
 INSERT INTO products (name, description, price, image_url, category_id) VALUES
-('Tênis Casual Masculino Nike Court Vision Low', 'Tênis casual com design inspirado no basquete, conforto e estilo para o dia a dia.', 399.90, 'https://static.netshoes.com.br/produtos/tenis-nike-court-vision-low-masculino/16/HZM-5910-016/HZM-5910-016_zoom1.jpg?ts=1603779035&ims=544x', 1),
+('Tênis Casual Masculino Nike Court Vision Low', 'Tênis casual com design inspirado no basquete, conforto e estilo para o dia a dia.', 399.90, 'https://imgnike-a.akamaihd.net/1920x1920/013718ID.jpg', 1),
 ('Sandália Feminina Birkenstock Arizona', 'Sandália icônica com design anatômico, conforto e estilo para todas as horas.', 499.90, 'https://static.netshoes.com.br/produtos/sandalia-arizona-nubuck-mocha-em-couro-birkenstock-hering-feminina/38/ARI-1280-138/ARI-1280-138_zoom1.jpg?ts=1595439670&ims=544x', 1),
 ('Camiseta Masculina Básica Reserva Gola Careca', 'Camiseta básica em algodão, ideal para o dia a dia, com caimento confortável e estilo clean.', 99.90, 'https://static.netshoes.com.br/produtos/camiseta-reserva-gola-careca-masculina-lilas/22/B67-6800-022/B67-6800-022_zoom1.jpg?ts=1694700748', 2),
 ('Camiseta Feminina Estampada Farm Rio Flores Tropicais', 'Camiseta com estampa exclusiva de flores tropicais, tecido leve e toque macio.', 149.90, 'https://a-static.mlcdn.com.br/450x450/camiseta-adidas-farm-rio-estampada-training-feminina/courovestsport/1052166-1052173/65f05f26816fd891611a70f166bfa9fa.jpeg', 2),
