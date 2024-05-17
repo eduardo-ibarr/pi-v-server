@@ -11,9 +11,9 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     phone VARCHAR(255) NOT NULL,
-    address VARCHAR(255), -- Endereço do usuário
-    birth_date DATE, -- Data de nascimento (opcional)
-    gender ENUM('M', 'F', 'O'), -- Gênero (opcional)
+    address VARCHAR(255),
+    birth_date DATE,
+    gender ENUM('M', 'F', 'O'),
     password_reset_token VARCHAR(255),
     password_reset_token_expiry DATETIME,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -42,28 +42,16 @@ CREATE TABLE IF NOT EXISTS products (
     price DECIMAL(10, 2) NOT NULL,
     image_url VARCHAR(255),
     category_id INT NOT NULL,
-    stock_quantity INT NOT NULL DEFAULT 0, -- Quantidade em estoque
-    brand VARCHAR(255), -- Marca do produto (opcional)
-    size VARCHAR(10), -- Tamanho (se aplicável)
-    color VARCHAR(255), -- Cor (opcional)
+    stock_quantity INT NOT NULL DEFAULT 0, 
+    brand VARCHAR(255), 
+    size VARCHAR(10), 
+    color VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP,
     is_active BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (category_id) REFERENCES categories(id)
 );
-
--- -- Tabela de avaliações de produtos
--- CREATE TABLE IF NOT EXISTS product_reviews (
---     id INT AUTO_INCREMENT PRIMARY KEY,
---     product_id INT NOT NULL,
---     user_id INT NOT NULL,
---     rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5), -- Avaliação de 1 a 5 estrelas
---     comment TEXT,
---     review_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---     FOREIGN KEY (product_id) REFERENCES products(id),
---     FOREIGN KEY (user_id) REFERENCES users(id)
--- );
 
 -- Tabela de carrinhos
 CREATE TABLE IF NOT EXISTS carts (
@@ -80,30 +68,39 @@ CREATE TABLE IF NOT EXISTS cart_items (
     cart_id INT NOT NULL,
     product_id INT NOT NULL,
     quantity INT NOT NULL DEFAULT 1,
-    size VARCHAR(10), -- Tamanho (se aplicável)
-    color VARCHAR(255), -- Cor (opcional)
+    size VARCHAR(10),
+    color VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (cart_id) REFERENCES carts(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
--- Tabela de visitas do site
-CREATE TABLE IF NOT EXISTS site_visits (
+-- Tabela de eventos de rastreamento
+CREATE TABLE IF NOT EXISTS events (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    visit_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    event_type ENUM('page_view', 'product_view') NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     user_id INT,
+    ip VARCHAR(45) NOT NULL,
+    user_agent VARCHAR(255) NOT NULL,
+    referrer VARCHAR(255),
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
--- Tabela de visualizações de produto
+-- Tabela filha para visualizações de página
+CREATE TABLE IF NOT EXISTS page_views (
+    event_id INT PRIMARY KEY,
+    url VARCHAR(255) NOT NULL,
+    FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+);
+
+-- Tabela filha para visualizações de produto
 CREATE TABLE IF NOT EXISTS product_views (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    view_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    event_id INT PRIMARY KEY,
     product_id INT,
-    user_id INT,
-    FOREIGN KEY (product_id) REFERENCES products(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
 -- Tabela de relatórios
