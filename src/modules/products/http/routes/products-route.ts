@@ -11,11 +11,7 @@ const productsController = new ProductsController(
   new JoiProvider()
 );
 
-router.get(
-  "/",
-  authMiddleware,
-  productsController.list.bind(productsController)
-);
+router.get("/", productsController.list.bind(productsController));
 router.post(
   "/",
   authMiddleware,
@@ -31,10 +27,6 @@ router.delete(
   authMiddleware,
   productsController.delete.bind(productsController)
 );
-router.get(
-  "/:id",
-  authMiddleware,
-  productsController.show.bind(productsController)
-);
+router.get("/:id", productsController.show.bind(productsController));
 
 export default router;

@@ -10,5 +10,8 @@ export interface User {
   updated_at: Date;
   deleted_at: Date;
   is_active: boolean;
+  address: string;
+  birth_date: Date;
+  gender: string;
   role: "admin" | "user";
 }

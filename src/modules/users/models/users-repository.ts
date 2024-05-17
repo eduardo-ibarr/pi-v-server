@@ -15,4 +15,5 @@ export interface IUsersRepository {
   list(): Promise<User[]>;
   update(id: number, data: UpdateUserDTO): Promise<User>;
   delete(id: number): Promise<void>;
+  softDelete(id: number): Promise<void>;
 }

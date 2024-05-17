@@ -11,11 +11,7 @@ const categoriesController = new CategoriesController(
   new JoiProvider()
 );
 
-router.get(
-  "/",
-  authMiddleware,
-  categoriesController.list.bind(categoriesController)
-);
+router.get("/", categoriesController.list.bind(categoriesController));
 router.post(
   "/",
   authMiddleware,
@@ -31,10 +27,6 @@ router.delete(
   authMiddleware,
   categoriesController.delete.bind(categoriesController)
 );
-router.get(
-  "/:id",
-  authMiddleware,
-  categoriesController.show.bind(categoriesController)
-);
+router.get("/:id", categoriesController.show.bind(categoriesController));
 
 export default router;

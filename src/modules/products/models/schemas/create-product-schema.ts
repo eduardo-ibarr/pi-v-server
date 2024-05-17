@@ -7,4 +7,8 @@ export const createProductSchema = Joi.object({
   image_url: Joi.string(),
   category_id: Joi.number().required(),
   is_active: Joi.boolean(),
+  stock_quantity: Joi.number().required(),
+  brand: Joi.string().required(),
+  size: Joi.string().required(),
+  color: Joi.string().required(),
 });

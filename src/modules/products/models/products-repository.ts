@@ -8,4 +8,5 @@ export interface IProductsRepository {
   list(): Promise<Product[]>;
   update(id: number, data: UpdateProductDTO): Promise<Product>;
   delete(id: number): Promise<void>;
+  softDelete(id: number): Promise<void>;
 }

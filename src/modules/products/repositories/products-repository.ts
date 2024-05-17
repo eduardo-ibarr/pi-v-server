@@ -9,15 +9,22 @@ export class ProductsRepository implements IProductsRepository {
 
   async create(data: CreateProductDTO): Promise<void> {
     const query = `
-      INSERT INTO products (name, description, price, image_url, category_id, is_active)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `;
+        INSERT INTO products (
+          name, description, price, image_url, category_id, 
+          stock_quantity, brand, size, color, is_active
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
     const values = [
       data.name,
       data.description,
       data.price,
       data.image_url,
       data.category_id,
+      data.stock_quantity ?? 0,
+      data.brand,
+      data.size,
+      data.color,
       data.is_active ?? true,
     ];
 
@@ -26,9 +33,9 @@ export class ProductsRepository implements IProductsRepository {
 
   async findById(id: number): Promise<Product | null> {
     const query = `
-      SELECT * FROM products
-      WHERE id = ?
-    `;
+        SELECT * FROM products
+        WHERE id = ?
+      `;
     const values = [id];
     const [result] = await this.databaseProvider.query(query, values);
     return result;
@@ -41,16 +48,30 @@ export class ProductsRepository implements IProductsRepository {
 
   async update(id: number, data: UpdateProductDTO): Promise<Product> {
     const query = `
-      UPDATE products
-      SET name = ?, description = ?, price = ?, image_url = ?, category_id = ?, is_active = ?
-      WHERE id = ?
-    `;
+        UPDATE products
+        SET 
+          name = ?, 
+          description = ?, 
+          price = ?, 
+          image_url = ?, 
+          category_id = ?, 
+          stock_quantity = ?, 
+          brand = ?,
+          size = ?,
+          color = ?,
+          is_active = ?
+        WHERE id = ?
+      `;
     const values = [
       data.name,
       data.description,
       data.price,
       data.image_url,
       data.category_id,
+      data.stock_quantity ?? 0,
+      data.brand,
+      data.size,
+      data.color,
       data.is_active ?? true,
       id,
     ];
@@ -61,6 +82,16 @@ export class ProductsRepository implements IProductsRepository {
   async delete(id: number): Promise<void> {
     const query = `
       DELETE FROM products
+      WHERE id = ?
+    `;
+    const values = [id];
+    await this.databaseProvider.query(query, values);
+  }
+
+  async softDelete(id: number): Promise<void> {
+    const query = `
+      UPDATE products
+      SET deleted_at = NOW(), is_active = FALSE
       WHERE id = ?
     `;
     const values = [id];

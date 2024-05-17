@@ -43,15 +43,20 @@ export class UsersRepository implements IUsersRepository {
 
   async create(data: CreateUserDTO): Promise<void> {
     const query = `
-      INSERT INTO users (name, email, password, phone, role)
-      VALUES (?, ?, ?, ?, ?)
-    `;
+        INSERT INTO users (
+          name, email, password, phone, role, address, birth_date, gender
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `;
     const values = [
       data.name,
       data.email,
       data.password,
       data.phone,
       data.role,
+      data.address,
+      data.birth_date,
+      data.gender,
     ];
 
     await this.databaseProvider.query(query, values);
@@ -73,19 +78,37 @@ export class UsersRepository implements IUsersRepository {
 
   async update(id: number, data: UpdateUserDTO): Promise<User> {
     const query = `
-      UPDATE users
-      SET name = ?, email = ?, phone = ?
-      WHERE id = ?
-    `;
-    const values = [data.name, data.email, data.phone, id];
-    const result = await this.databaseProvider.query(query, values);
-    return result;
+        UPDATE users
+        SET name = ?, email = ?, phone = ?, address = ?, birth_date = ?, gender = ?
+        WHERE id = ?
+      `;
+    const values = [
+      data.name,
+      data.email,
+      data.phone,
+      data.address,
+      data.birth_date,
+      data.gender,
+      id,
+    ];
+    await this.databaseProvider.query(query, values);
+    return this.findById(id) as Promise<User>;
   }
 
   async delete(id: number): Promise<void> {
     const query = `
       UPDATE users
       SET deleted_at = NOW(), is_active = 0
+      WHERE id = ?
+    `;
+    const values = [id];
+    await this.databaseProvider.query(query, values);
+  }
+
+  async softDelete(id: number): Promise<void> {
+    const query = `
+      UPDATE users
+      SET deleted_at = NOW(), is_active = FALSE
       WHERE id = ?
     `;
     const values = [id];
