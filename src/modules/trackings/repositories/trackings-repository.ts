@@ -118,9 +118,10 @@ export class TrackingsRepository implements ITrackingsRepository {
 
   async listProductViews(): Promise<ProductView[]> {
     const query = `
-      SELECT e.*, p.product_id 
+      SELECT e.*, p.product_id, pr.name AS product_name
       FROM events e
       JOIN product_views p ON e.id = p.event_id
+      JOIN products pr ON p.product_id = pr.id
       WHERE e.event_type = 'product_view'
     `;
     return await this.databaseProvider.query(query);
