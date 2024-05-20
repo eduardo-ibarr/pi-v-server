@@ -83,8 +83,6 @@ CREATE TABLE IF NOT EXISTS events (
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     user_id INT,
     ip VARCHAR(45) NOT NULL,
-    user_agent VARCHAR(255) NOT NULL,
-    referrer VARCHAR(255),
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 

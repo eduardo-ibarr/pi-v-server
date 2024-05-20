@@ -1,5 +1,4 @@
-import { CreateEventDTO } from "./create-event-dto";
-
-export interface CreateProductViewDTO extends CreateEventDTO {
+export interface CreateProductViewDTO {
+  event_id: number;
   product_id: number;
 }

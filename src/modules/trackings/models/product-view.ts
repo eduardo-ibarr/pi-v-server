@@ -1,5 +1,4 @@
-import { Event } from "./event";
-
-export interface ProductView extends Event {
+export interface ProductView {
+  event_id: number;
   product_id: number;
 }

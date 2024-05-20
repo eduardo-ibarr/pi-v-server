@@ -1,6 +1,7 @@
 import { IDatabaseProvider } from "../../../providers/database/models/database-provider";
 import { CreateEventDTO } from "../models/dtos/create-event-dto";
 import { CreatePageViewDTO } from "../models/dtos/create-page-view-dto";
+import { CreateProductViewDTO } from "../models/dtos/create-product-view-dto";
 import { Event } from "../models/event";
 import { PageView } from "../models/page-view";
 import { ProductView } from "../models/product-view";
@@ -11,45 +12,38 @@ export class TrackingsRepository implements ITrackingsRepository {
 
   async createEvent(event: CreateEventDTO): Promise<Event> {
     const query = `
-      INSERT INTO events (event_type, user_id, ip, user_agent, referrer)
-      VALUES (?, ?, ?, ?, ?)
+      INSERT INTO events (event_type, user_id, ip) 
+      VALUES (?, ?, ?)
     `;
-    const values = [
-      event.event_type,
-      event.user_id,
-      event.ip,
-      event.user_agent,
-      event.referrer,
-    ];
+    const values = [event.event_type, event.user_id, event.ip];
     const result = await this.databaseProvider.query(query, values);
-    return { ...event, id: result.insertId as number };
+    return {
+      ...event,
+      id: result.insertId as number,
+      timestamp: result.timestamp,
+    };
   }
 
   async createPageView(pageView: CreatePageViewDTO): Promise<void> {
-    const event = await this.createEvent(pageView);
     const query = `
-      INSERT INTO page_views (event_id, url)
+      INSERT INTO page_views (event_id, url) 
       VALUES (?, ?)
     `;
-    const values = [event.id, pageView.url];
+    const values = [pageView.event_id, pageView.url];
     await this.databaseProvider.query(query, values);
   }
 
-  async createProductView(productView: ProductView): Promise<void> {
-    const event = await this.createEvent(productView);
+  async createProductView(productView: CreateProductViewDTO): Promise<void> {
     const query = `
-      INSERT INTO product_views (event_id, product_id)
+      INSERT INTO product_views (event_id, product_id) 
       VALUES (?, ?)
     `;
-    const values = [event.id, productView.product_id];
+    const values = [productView.event_id, productView.product_id];
     await this.databaseProvider.query(query, values);
   }
 
   async getEventById(eventId: number): Promise<Event | null> {
-    const query = `
-      SELECT * FROM events
-      WHERE id = ?
-    `;
+    const query = `SELECT * FROM events WHERE id = ?`;
     const values = [eventId];
     const [result] = await this.databaseProvider.query(query, values);
     return result || null;
@@ -57,7 +51,7 @@ export class TrackingsRepository implements ITrackingsRepository {
 
   async getPageViewById(eventId: number): Promise<PageView | null> {
     const query = `
-      SELECT e.*, pv.url
+      SELECT e.*, pv.url 
       FROM events e
       JOIN page_views pv ON e.id = pv.event_id
       WHERE e.id = ?
@@ -69,7 +63,7 @@ export class TrackingsRepository implements ITrackingsRepository {
 
   async getProductViewById(eventId: number): Promise<ProductView | null> {
     const query = `
-      SELECT e.*, p.product_id
+      SELECT e.*, p.product_id 
       FROM events e
       JOIN product_views p ON e.id = p.event_id
       WHERE e.id = ?
@@ -80,17 +74,14 @@ export class TrackingsRepository implements ITrackingsRepository {
   }
 
   async getEventsByUserId(userId: number): Promise<Event[]> {
-    const query = `
-      SELECT * FROM events
-      WHERE user_id = ?
-    `;
+    const query = `SELECT * FROM events WHERE user_id = ?`;
     const values = [userId];
     return await this.databaseProvider.query(query, values);
   }
 
   async getPageViewsByUserId(userId: number): Promise<PageView[]> {
     const query = `
-      SELECT e.*, pv.url
+      SELECT e.*, pv.url 
       FROM events e
       JOIN page_views pv ON e.id = pv.event_id
       WHERE e.user_id = ? AND e.event_type = 'page_view'
@@ -101,7 +92,7 @@ export class TrackingsRepository implements ITrackingsRepository {
 
   async getProductViewsByUserId(userId: number): Promise<ProductView[]> {
     const query = `
-      SELECT e.*, p.product_id
+      SELECT e.*, p.product_id 
       FROM events e
       JOIN product_views p ON e.id = p.event_id
       WHERE e.user_id = ? AND e.event_type = 'product_view'
@@ -117,7 +108,7 @@ export class TrackingsRepository implements ITrackingsRepository {
 
   async listPageViews(): Promise<PageView[]> {
     const query = `
-      SELECT e.*, pv.url
+      SELECT e.*, pv.url 
       FROM events e
       JOIN page_views pv ON e.id = pv.event_id
       WHERE e.event_type = 'page_view'
@@ -127,7 +118,7 @@ export class TrackingsRepository implements ITrackingsRepository {
 
   async listProductViews(): Promise<ProductView[]> {
     const query = `
-      SELECT e.*, p.product_id
+      SELECT e.*, p.product_id 
       FROM events e
       JOIN product_views p ON e.id = p.event_id
       WHERE e.event_type = 'product_view'

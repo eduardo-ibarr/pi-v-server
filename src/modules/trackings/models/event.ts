@@ -1,9 +1,7 @@
 export interface Event {
-  id?: number;
+  id: number;
   event_type: "page_view" | "product_view";
   timestamp: Date;
-  user_id: number;
+  user_id: number | null;
   ip: string;
-  user_agent: string;
-  referrer?: string;
 }

@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { TrackingsFactory } from "../../factories/trackings-factory";
 import { IValidationProvider } from "../../../../providers/validation/models/validation-provider";
-import { createEventSchema } from "../../models/schemas/create-event-schema";
 import { createPageViewSchema } from "../../models/schemas/create-page-view-schema";
 import { createProductViewSchema } from "../../models/schemas/create-product-view-schema";
 import { paramsSchema } from "../../models/schemas/params-schema";
@@ -12,18 +11,23 @@ export class TrackingsController {
     private readonly validationProvider: IValidationProvider
   ) {}
 
-  async createEvent(request: Request, response: Response) {
-    await this.validationProvider.validate(request.body, createEventSchema);
-    const createEventService = this.trackingsFactory.makeCreateEventService();
-    const event = await createEventService.execute(request.body);
-    return response.status(201).json(event);
-  }
-
   async createPageView(request: Request, response: Response) {
     await this.validationProvider.validate(request.body, createPageViewSchema);
     const createPageViewService =
       this.trackingsFactory.makeCreatePageViewService();
-    const pageView = await createPageViewService.execute(request.body);
+
+    const data = {
+      data: {
+        url: request.body.url,
+      },
+      event: {
+        event_type: request.body.event_type,
+        user_id: request.body.user_id,
+        ip: request.ip,
+      },
+    };
+
+    const pageView = await createPageViewService.execute(data);
     return response.status(201).json(pageView);
   }
 
@@ -34,7 +38,19 @@ export class TrackingsController {
     );
     const createProductViewService =
       this.trackingsFactory.makeCreateProductViewService();
-    const productView = await createProductViewService.execute(request.body);
+
+    const data = {
+      data: {
+        product_id: request.body.product_id,
+      },
+      event: {
+        event_type: request.body.event_type,
+        user_id: request.body.user_id,
+        ip: request.ip,
+      },
+    };
+
+    const productView = await createProductViewService.execute(data);
     return response.status(201).json(productView);
   }
 

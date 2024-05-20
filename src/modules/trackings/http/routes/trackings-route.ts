@@ -12,37 +12,49 @@ const trackingsController = new TrackingsController(
 );
 
 router.post(
-  "/",
-  authMiddleware,
-  trackingsController.createEvent.bind(trackingsController)
-);
-router.post(
   "/page_views",
-  authMiddleware,
   trackingsController.createPageView.bind(trackingsController)
 );
+
 router.post(
   "/product_views",
-  authMiddleware,
   trackingsController.createProductView.bind(trackingsController)
 );
-router.get("/:id", trackingsController.getEventById.bind(trackingsController));
+
 router.get(
-  "/page_views/:id",
-  trackingsController.getPageViewById.bind(trackingsController)
+  "/",
+  authMiddleware,
+  trackingsController.listEvents.bind(trackingsController)
 );
-router.get(
-  "/product_views/:id",
-  trackingsController.getProductViewById.bind(trackingsController)
-);
-router.get("/", trackingsController.listEvents.bind(trackingsController));
+
 router.get(
   "/page_views",
+  authMiddleware,
   trackingsController.listPageViews.bind(trackingsController)
 );
+
 router.get(
   "/product_views",
+  authMiddleware,
   trackingsController.listProductViews.bind(trackingsController)
+);
+
+router.get(
+  "/:id",
+  authMiddleware,
+  trackingsController.getEventById.bind(trackingsController)
+);
+
+router.get(
+  "/page_views/:id",
+  authMiddleware,
+  trackingsController.getPageViewById.bind(trackingsController)
+);
+
+router.get(
+  "/product_views/:id",
+  authMiddleware,
+  trackingsController.getProductViewById.bind(trackingsController)
 );
 
 export default router;

@@ -1,7 +1,6 @@
 import { MySQLProvider } from "../../../providers/database/mysql-provider";
 import { TrackingsRepository } from "../repositories/trackings-repository";
 
-import { CreateEventService } from "../services/create/create-event";
 import { CreatePageViewService } from "../services/create/create-page-view";
 import { CreateProductViewService } from "../services/create/create-product-view";
 
@@ -14,10 +13,6 @@ import { ListPageViewsService } from "../services/list/list-page-views";
 import { ListProductViewsService } from "../services/list/list-product-views";
 
 export class TrackingsFactory {
-  static makeCreateEventService() {
-    return new CreateEventService(new TrackingsRepository(new MySQLProvider()));
-  }
-
   static makeCreatePageViewService() {
     return new CreatePageViewService(
       new TrackingsRepository(new MySQLProvider())
