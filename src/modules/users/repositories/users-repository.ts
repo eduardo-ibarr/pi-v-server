@@ -44,7 +44,7 @@ export class UsersRepository implements IUsersRepository {
   async create(data: CreateUserDTO): Promise<void> {
     const query = `
         INSERT INTO users (
-          name, email, password, phone, role, address, birth_date, gender
+          name, email, password, phone, role, gender
         )
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
       `;
@@ -54,8 +54,6 @@ export class UsersRepository implements IUsersRepository {
       data.password,
       data.phone,
       data.role,
-      data.address,
-      data.birth_date,
       data.gender,
     ];
 
@@ -79,18 +77,10 @@ export class UsersRepository implements IUsersRepository {
   async update(id: number, data: UpdateUserDTO): Promise<User> {
     const query = `
         UPDATE users
-        SET name = ?, email = ?, phone = ?, address = ?, birth_date = ?, gender = ?
+        SET name = ?, email = ?, phone = ?, gender = ?
         WHERE id = ?
       `;
-    const values = [
-      data.name,
-      data.email,
-      data.phone,
-      data.address,
-      data.birth_date,
-      data.gender,
-      id,
-    ];
+    const values = [data.name, data.email, data.phone, data.gender, id];
     await this.databaseProvider.query(query, values);
     return this.findById(id) as Promise<User>;
   }

@@ -1,9 +1,9 @@
 import Joi from "joi";
 
 export const updateUserSchema = Joi.object({
-  name: Joi.string(),
-  email: Joi.string().email(),
-  phone: Joi.string(),
-  address: Joi.string(),
-  birth_date: Joi.date(),
+  name: Joi.string().optional(),
+  email: Joi.string().email().optional(),
+  phone: Joi.string().optional(),
+  address: Joi.string().optional(),
+  birth_date: Joi.date().optional(),
 });

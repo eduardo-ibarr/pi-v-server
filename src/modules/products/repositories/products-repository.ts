@@ -10,8 +10,7 @@ export class ProductsRepository implements IProductsRepository {
   async create(data: CreateProductDTO): Promise<void> {
     const query = `
         INSERT INTO products (
-          name, description, price, image_url, category_id, 
-          stock_quantity, brand, size, color, is_active
+          name, description, price, image_url, category_id, is_active
         )
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
@@ -21,10 +20,6 @@ export class ProductsRepository implements IProductsRepository {
       data.price,
       data.image_url,
       data.category_id,
-      data.stock_quantity ?? 0,
-      data.brand,
-      data.size,
-      data.color,
       data.is_active ?? true,
     ];
 
@@ -54,11 +49,7 @@ export class ProductsRepository implements IProductsRepository {
           description = ?, 
           price = ?, 
           image_url = ?, 
-          category_id = ?, 
-          stock_quantity = ?, 
-          brand = ?,
-          size = ?,
-          color = ?,
+          category_id = ?,
           is_active = ?
         WHERE id = ?
       `;
@@ -68,10 +59,6 @@ export class ProductsRepository implements IProductsRepository {
       data.price,
       data.image_url,
       data.category_id,
-      data.stock_quantity ?? 0,
-      data.brand,
-      data.size,
-      data.color,
       data.is_active ?? true,
       id,
     ];
