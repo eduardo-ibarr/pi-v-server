@@ -18,6 +18,16 @@ app.use(cors());
 app.use(helmet());
 app.use(express.json());
 
+app.get("/health-check", (req, res) => {
+  res
+    .status(200)
+    .json({
+      message: "Server is running",
+      timestamp: new Date(),
+      status: "OK",
+    });
+});
+
 app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/products", productsRoutes);
