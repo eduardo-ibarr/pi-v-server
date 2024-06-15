@@ -7,4 +7,5 @@ export const updateProductSchema = Joi.object({
   image_url: Joi.string().optional(),
   category_id: Joi.number().optional(),
   is_active: Joi.boolean().optional(),
+  status: Joi.string().optional(),
 });

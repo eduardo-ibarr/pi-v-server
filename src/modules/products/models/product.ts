@@ -8,5 +8,6 @@ export interface Product {
   created_at: Date;
   updated_at: Date;
   deleted_at?: Date;
+  status: string;
   is_active: boolean;
 }
