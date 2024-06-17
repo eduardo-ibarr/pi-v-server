@@ -65,8 +65,7 @@ export class ProductsRepository implements IProductsRepository {
         products.created_at, 
         products.updated_at, 
         products.is_active,
-        products.deleted_at,
-        products.status
+        products.deleted_at
       FROM products
       INNER JOIN categories ON products.category_id = categories.id
     `;
