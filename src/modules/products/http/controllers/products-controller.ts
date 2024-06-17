@@ -4,6 +4,7 @@ import { IValidationProvider } from "../../../../providers/validation/models/val
 import { createProductSchema } from "../../models/schemas/create-product-schema";
 import { updateProductSchema } from "../../models/schemas/update-product-schema";
 import { paramsSchema } from "../../models/schemas/params-schema";
+import { queryListProductsSchema } from "../../models/schemas/query-list-products-schema";
 
 export class ProductsController {
   constructor(
@@ -12,8 +13,13 @@ export class ProductsController {
   ) {}
 
   async list(request: Request, response: Response) {
+    await this.validationProvider.validate(
+      request.query,
+      queryListProductsSchema
+    );
+
     const listProductsService = this.productsFactory.makeListProductsService();
-    const products = await listProductsService.execute();
+    const products = await listProductsService.execute(request.query);
 
     return response.json(products);
   }

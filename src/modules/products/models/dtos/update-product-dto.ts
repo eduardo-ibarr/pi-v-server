@@ -5,4 +5,5 @@ export interface UpdateProductDTO extends Record<"id", number> {
   image_url?: string;
   category_id?: number;
   is_active?: boolean;
+  status?: string;
 }

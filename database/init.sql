@@ -44,28 +44,29 @@ CREATE TABLE IF NOT EXISTS products (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP,
     is_active BOOLEAN DEFAULT TRUE,
+    status ENUM('available', 'unavailable') DEFAULT 'available',
     FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
--- Tabela de carrinhos
-CREATE TABLE IF NOT EXISTS carts (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
+-- -- Tabela de carrinhos
+-- CREATE TABLE IF NOT EXISTS carts (
+--     id INT AUTO_INCREMENT PRIMARY KEY,
+--     user_id INT NOT NULL UNIQUE,
+--     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+--     FOREIGN KEY (user_id) REFERENCES users(id)
+-- );
 
--- Tabela de itens do carrinho
-CREATE TABLE IF NOT EXISTS cart_items (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    cart_id INT NOT NULL,
-    product_id INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (cart_id) REFERENCES carts(id),
-    FOREIGN KEY (product_id) REFERENCES products(id)
-);
+-- -- Tabela de itens do carrinho
+-- CREATE TABLE IF NOT EXISTS cart_items (
+--     id INT AUTO_INCREMENT PRIMARY KEY,
+--     cart_id INT NOT NULL,
+--     product_id INT NOT NULL,
+--     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+--     FOREIGN KEY (cart_id) REFERENCES carts(id),
+--     FOREIGN KEY (product_id) REFERENCES products(id)
+-- );
 
 -- Tabela de eventos de rastreamento
 CREATE TABLE IF NOT EXISTS events (
@@ -101,22 +102,21 @@ CREATE TABLE IF NOT EXISTS reports (
 );
 
 -- Tabela de pedidos
-CREATE TABLE IF NOT EXISTS orders (
+CREATE TABLE IF NOT EXISTS reservations (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     total_amount DECIMAL(10, 2) NOT NULL,
-    order_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    reservation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 -- Tabela de itens do pedido
-CREATE TABLE IF NOT EXISTS order_items (
+CREATE TABLE IF NOT EXISTS reservation_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT NOT NULL,
+    reservation_id INT NOT NULL,
     product_id INT NOT NULL,
-    quantity INT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (reservation_id) REFERENCES reservations(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
