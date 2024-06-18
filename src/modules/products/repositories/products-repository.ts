@@ -14,7 +14,7 @@ export class ProductsRepository implements IProductsRepository {
         INSERT INTO products (
           name, description, price, image_url, category_id, is_active
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?)
       `;
     const values = [
       data.name,
@@ -65,7 +65,8 @@ export class ProductsRepository implements IProductsRepository {
         products.created_at, 
         products.updated_at, 
         products.is_active,
-        products.deleted_at
+        products.deleted_at,
+        products.status
       FROM products
       INNER JOIN categories ON products.category_id = categories.id
     `;
