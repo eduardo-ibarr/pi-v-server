@@ -31,7 +31,7 @@ export class ProductsRepository implements IProductsRepository {
   async findById(id: number): Promise<Product | null> {
     const query = `
         SELECT * FROM products
-        WHERE id = ?
+        WHERE id = ? AND is_active = TRUE AND deleted_at IS NULL
       `;
     const values = [id];
     const [result] = await this.databaseProvider.query(query, values);

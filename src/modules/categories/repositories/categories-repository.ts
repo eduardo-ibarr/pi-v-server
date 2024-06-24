@@ -20,7 +20,7 @@ export class CategoriesRepository implements ICategoriesRepository {
   async findById(id: number): Promise<Category | null> {
     const query = `
       SELECT * FROM categories
-      WHERE id = ?
+      WHERE id = ? AND deleted_at IS NULL
     `;
     const values = [id];
     const [result] = await this.databaseProvider.query(query, values);
@@ -28,7 +28,7 @@ export class CategoriesRepository implements ICategoriesRepository {
   }
 
   async list(): Promise<Category[]> {
-    const query = `SELECT * FROM categories`;
+    const query = `SELECT * FROM categories WHERE deleted_at IS NULL`;
     return await this.databaseProvider.query(query);
   }
 

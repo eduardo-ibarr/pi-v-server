@@ -46,7 +46,7 @@ export class UsersRepository implements IUsersRepository {
         INSERT INTO users (
           name, email, password, phone, role, gender
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?)
       `;
     const values = [
       data.name,

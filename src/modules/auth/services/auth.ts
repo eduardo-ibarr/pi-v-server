@@ -26,6 +26,6 @@ export class AuthService {
   }
 
   generateToken(user: User): Promise<string> {
-    return this.authProvider.authenticate(user.email, user.role);
+    return this.authProvider.authenticate(user.email, user.role, user.id);
   }
 }

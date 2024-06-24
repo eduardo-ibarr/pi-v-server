@@ -12,7 +12,7 @@ export class DeleteProductService {
     }
 
     try {
-      await this.productsRepository.delete(id);
+      await this.productsRepository.softDelete(id);
     } catch (error) {
       console.error(error);
       throw new AppError("Erro ao deletar produto.", 500);

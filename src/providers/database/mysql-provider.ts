@@ -25,4 +25,8 @@ export class MySQLProvider implements IDatabaseProvider {
       throw error;
     }
   }
+
+  async getConnection(): Promise<any> {
+    return await this.pool.getConnection();
+  }
 }
