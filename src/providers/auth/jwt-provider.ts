@@ -3,11 +3,16 @@ import { IAuthProvider } from "./models/auth-provider";
 import { Environment } from "../../app/environment";
 
 export class JWTProvider implements IAuthProvider {
-  public async authenticate(email: string, role: string): Promise<string> {
+  public async authenticate(
+    email: string,
+    role: string,
+    id: number
+  ): Promise<string> {
     const token = sign(
       {
         email,
         role,
+        id,
       },
       Environment.JWT_SECRET,
       {

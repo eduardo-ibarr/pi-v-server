@@ -9,5 +9,4 @@ export interface CreateReservationDTO {
 export interface CreateReservationItemDTO {
   product_id: number;
   price: number;
-  quantity: number;
 }

@@ -31,22 +31,29 @@ export class ReservationsRepository implements IReservationsRepository {
         reservationQuery,
         reservationValues
       );
-      const reservationId = reservationResult.insertId;
+
+      const reservationId = reservationResult[0].insertId;
 
       for (const item of data.reservation_items) {
         const itemQuery = `
           INSERT INTO reservation_items (
-            reservation_id, product_id, price, quantity
+            reservation_id, product_id, price
           )
-          VALUES (?, ?, ?, ?)
+          VALUES (?, ?, ?)
         `;
-        const itemValues = [
-          reservationId,
-          item.product_id,
-          item.price,
-          item.quantity,
-        ];
+        const itemValues = [reservationId, item.product_id, item.price];
         await connection.query(itemQuery, itemValues);
+      }
+
+      const updateProductQuery = `
+        UPDATE products
+        SET status = 'unavailable'
+        WHERE id = ?
+      `;
+
+      for (const item of data.reservation_items) {
+        const productValues = [item.product_id];
+        await connection.query(updateProductQuery, productValues);
       }
 
       await connection.commit();
@@ -78,7 +85,6 @@ export class ReservationsRepository implements IReservationsRepository {
       reservation_items: results.map((item) => ({
         product_id: item.product_id,
         price: item.price,
-        quantity: item.quantity,
         product_name: item.product_name,
         product_description: item.product_description,
         product_image_url: item.product_image_url,
@@ -142,7 +148,6 @@ export class ReservationsRepository implements IReservationsRepository {
       acc[id].reservation_items.push({
         product_id: item.product_id,
         price: item.price,
-        quantity: item.quantity,
         product_name: item.product_name,
         product_description: item.product_description,
         product_image_url: item.product_image_url,
@@ -186,11 +191,11 @@ export class ReservationsRepository implements IReservationsRepository {
       for (const item of data.reservation_items) {
         const itemQuery = `
           INSERT INTO reservation_items (
-            reservation_id, product_id, price, quantity
+            reservation_id, product_id, price
           )
-          VALUES (?, ?, ?, ?)
+          VALUES (?, ?, ?)
         `;
-        const itemValues = [id, item.product_id, item.price, item.quantity];
+        const itemValues = [id, item.product_id, item.price];
         await connection.query(itemQuery, itemValues);
       }
 

@@ -9,5 +9,4 @@ export interface UpdateReservationDTO extends Record<"id", number> {
 export interface UpdateReservationItemDTO extends Record<"id", number> {
   product_id?: number;
   price?: number;
-  quantity?: number;
 }

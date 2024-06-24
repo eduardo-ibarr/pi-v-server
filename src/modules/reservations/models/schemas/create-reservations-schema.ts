@@ -8,11 +8,6 @@ export const createReservationSchema = Joi.object({
       Joi.object({
         product_id: Joi.number().required().label("Product ID"),
         price: Joi.number().positive().required().label("Price"),
-        quantity: Joi.number()
-          .integer()
-          .positive()
-          .required()
-          .label("Quantity"),
       })
     )
     .min(1)
