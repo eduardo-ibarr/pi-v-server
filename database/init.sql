@@ -107,6 +107,7 @@ CREATE TABLE IF NOT EXISTS reservations (
     user_id INT NOT NULL,
     total_amount DECIMAL(10, 2) NOT NULL,
     reservation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 

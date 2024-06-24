@@ -10,6 +10,7 @@ import authRoutes from "./modules/auth/http/routes/auth-routes";
 import productsRoutes from "./modules/products/http/routes/products-route";
 import categoriesRoutes from "./modules/categories/http/routes/categories-route";
 import trackingsRoutes from "./modules/trackings/http/routes/trackings-route";
+import purchasesRoutes from "./modules/purchases/http/routes/purchases"; // Novo import
 
 import { handleErrors } from "./app/middlewares/handle-errors";
 import { Environment } from "./app/environment";
@@ -19,13 +20,11 @@ app.use(helmet());
 app.use(express.json());
 
 app.get("/health-check", (req, res) => {
-  res
-    .status(200)
-    .json({
-      message: "Server is running",
-      timestamp: new Date(),
-      status: "OK",
-    });
+  res.status(200).json({
+    message: "Server is running",
+    timestamp: new Date(),
+    status: "OK",
+  });
 });
 
 app.use("/auth", authRoutes);
@@ -33,6 +32,7 @@ app.use("/users", usersRoutes);
 app.use("/products", productsRoutes);
 app.use("/categories", categoriesRoutes);
 app.use("/trackings", trackingsRoutes);
+app.use("/purchases", purchasesRoutes); // Nova rota
 
 app.use(handleErrors);
 
