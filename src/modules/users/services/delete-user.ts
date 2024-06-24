@@ -12,7 +12,7 @@ export class DeleteUserService {
     }
 
     try {
-      await this.usersRepository.delete(id);
+      await this.usersRepository.softDelete(id);
     } catch (error) {
       console.error(error);
       throw new AppError("Erro ao deletar usuário.", 500);

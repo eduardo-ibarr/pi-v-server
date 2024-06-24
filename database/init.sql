@@ -137,3 +137,14 @@ INSERT INTO products (name, description, price, image_url, category_id) VALUES
 ('Camiseta Masculina Básica Reserva Gola Careca', 'Camiseta básica em algodão, ideal para o dia a dia, com caimento confortável e estilo clean.', 99.90, 'https://static.netshoes.com.br/produtos/camiseta-reserva-gola-careca-masculina-lilas/22/B67-6800-022/B67-6800-022_zoom1.jpg?ts=1694700748', 2),
 ('Camiseta Feminina Estampada Farm Rio Flores Tropicais', 'Camiseta com estampa exclusiva de flores tropicais, tecido leve e toque macio.', 149.90, 'https://a-static.mlcdn.com.br/450x450/camiseta-adidas-farm-rio-estampada-training-feminina/courovestsport/1052166-1052173/65f05f26816fd891611a70f166bfa9fa.jpeg', 2),
 ('Blusa Feminina Manga Longa Tricô C&A', 'Blusa de tricô com manga longa, ideal para os dias mais frios, com toque macio e design moderno.', 129.90, 'https://cea.vteximg.com.br/arquivos/ids/11886028/Blusa-Tric-Com-Gola-Alta-Marinho_002_1.jpg?v=638260216071970000', 1);
+
+INSERT INTO reservations (user_id, total_amount, reservation_timestamp)
+VALUES
+(1, 899.80, NOW()), 
+(1, 199.80, NOW()); 
+
+INSERT INTO reservation_items (reservation_id, product_id, price, quantity)
+VALUES
+(1, 1, 399.90, 1), 
+(1, 3, 499.90, 1),  
+(1, 2, 99.90, 2);
