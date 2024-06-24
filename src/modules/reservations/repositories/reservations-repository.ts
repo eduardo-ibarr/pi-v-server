@@ -70,8 +70,10 @@ export class ReservationsRepository implements IReservationsRepository {
         SELECT 
             r.*,
             ri.product_id, ri.price,
+            u.name as user_name, u.phone as user_phone,
             p.name as product_name, p.description as product_description, p.image_url as product_image_url
         FROM reservations r
+        LEFT JOIN users u ON r.user_id = u.id
         LEFT JOIN reservation_items ri ON r.id = ri.reservation_id
         LEFT JOIN products p ON ri.product_id = p.id
         WHERE r.id = ?
@@ -84,6 +86,8 @@ export class ReservationsRepository implements IReservationsRepository {
       ...results[0],
       reservation_items: results.map((item) => ({
         product_id: item.product_id,
+        user_name: item.user_name,
+        user_phone: item.user_phone,
         price: item.price,
         product_name: item.product_name,
         product_description: item.product_description,
@@ -108,7 +112,7 @@ export class ReservationsRepository implements IReservationsRepository {
     SELECT 
         r.id, r.user_id, r.total_amount, r.reservation_timestamp,
         ri.product_id, ri.price,
-        u.name as user_name, u.email as user_email,
+        u.name as user_name, u.phone as user_phone,
         p.name as product_name, p.description as product_description, p.image_url as product_image_url
     FROM reservations r
     LEFT JOIN users u ON r.user_id = u.id
@@ -140,6 +144,8 @@ export class ReservationsRepository implements IReservationsRepository {
         acc[id] = {
           id: item.id,
           user_id: item.user_id,
+          user_name: item.user_name,
+          user_phone: item.user_phone,
           total_amount: item.total_amount,
           reservation_timestamp: item.reservation_timestamp,
           reservation_items: [],
