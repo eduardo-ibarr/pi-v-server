@@ -77,10 +77,10 @@ export class UsersRepository implements IUsersRepository {
   async update(id: number, data: UpdateUserDTO): Promise<User> {
     const query = `
         UPDATE users
-        SET name = ?, email = ?, phone = ?, gender = ?
+        SET name = ?, email = ?, phone = ?, role = ?
         WHERE id = ?
       `;
-    const values = [data.name, data.email, data.phone, data.gender, id];
+    const values = [data.name, data.email, data.phone, data.role, id];
     await this.databaseProvider.query(query, values);
     return this.findById(id) as Promise<User>;
   }

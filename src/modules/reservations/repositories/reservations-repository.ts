@@ -216,12 +216,45 @@ export class ReservationsRepository implements IReservationsRepository {
   }
 
   async delete(id: number): Promise<void> {
+    const deleteItemsQuery = `
+      DELETE FROM reservation_items WHERE reservation_id = ?
+    `;
+
+    const productIdQuery = `
+      SELECT product_id FROM reservation_items WHERE reservation_id = ?
+    `;
+
+    const productUpdateQuery = `
+      UPDATE products
+      SET deleted_at = NOW()
+      WHERE id = ?
+    `;
+
     const query = `
       DELETE FROM reservations
       WHERE id = ?
     `;
     const values = [id];
-    await this.databaseProvider.query(query, values);
+
+    const connection = await this.databaseProvider.getConnection();
+    try {
+      await connection.beginTransaction();
+
+      const productIds = await connection.query(productIdQuery, [id]);
+      for (const { product_id } of productIds) {
+        await connection.query(productUpdateQuery, [product_id]);
+      }
+
+      await connection.query(deleteItemsQuery, [id]);
+      await connection.query(query, values);
+
+      await connection.commit();
+    } catch (error) {
+      await connection.rollback();
+      throw error;
+    } finally {
+      connection.release();
+    }
   }
 
   async softDelete(id: number): Promise<void> {

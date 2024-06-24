@@ -5,5 +5,6 @@ export const updateUserSchema = Joi.object({
   email: Joi.string().email().optional(),
   phone: Joi.string().optional(),
   address: Joi.string().optional(),
+  role: Joi.string().optional(),
   birth_date: Joi.date().optional(),
 });

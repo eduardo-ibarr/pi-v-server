@@ -33,7 +33,7 @@ export class UsersController {
     await this.validationProvider.validate(request.params, paramsSchema);
 
     const { id } = request.params;
-    const { name, email, phone } = request.body;
+    const { name, email, phone, role } = request.body;
 
     const updateUserService = this.usersFactory.makeUpdateUserService();
 
@@ -42,6 +42,7 @@ export class UsersController {
       name,
       email,
       phone,
+      role,
     });
 
     return response.status(204).send();

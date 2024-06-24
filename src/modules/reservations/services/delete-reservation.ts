@@ -12,7 +12,7 @@ export class DeleteReservationService {
     }
 
     try {
-      await this.reservationsRepository.softDelete(id);
+      await this.reservationsRepository.delete(id);
     } catch (error) {
       console.error(error);
       throw new AppError("Erro ao deletar a reserva.", 500);
