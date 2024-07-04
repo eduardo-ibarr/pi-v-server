@@ -11,6 +11,7 @@ export class MySQLProvider implements IDatabaseProvider {
     database: Environment.DB_NAME,
     user: Environment.DB_USER,
     password: Environment.DB_PASSWORD,
+    charset: "utf8mb4",
   };
 
   constructor() {
